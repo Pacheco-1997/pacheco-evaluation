@@ -1,4 +1,7 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.Domain.Value_Objects;
+
+namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 
 /// <summary>
 /// Represents the response returned after successfully creating a new user.
@@ -14,4 +17,20 @@ public class CreateUserResult
     /// </summary>
     /// <value>A GUID that uniquely identifies the created user in the system.</value>
     public Guid Id { get; set; }
+
+    public Name Name { get; set; }
+
+    public Address Address { get; set; }
+
+    public string Password { get; set; } = string.Empty;
+
+
+    public string Email { get; set; } = string.Empty;
+
+
+    public string Phone { get; set; } = string.Empty;
+
+    public UserRole Role { get; set; }
+
+    public UserStatus Status { get; set; }
 }

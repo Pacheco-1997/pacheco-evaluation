@@ -3,6 +3,7 @@ using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Validation;
+using Ambev.DeveloperEvaluation.Domain.Value_Objects;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
@@ -16,6 +17,16 @@ public class User : BaseEntity, IUser
     /// <summary>
     /// Gets the user's full name.
     /// Must not be null or empty and should contain both first and last names.
+    /// </summary>
+    public Name Name { get; set; }
+
+    /// <summary>
+    /// Gets the user's address.
+    /// </summary>
+    public Address Address { get; set; }
+
+    /// <summary>
+    /// Gets the user username.
     /// </summary>
     public string Username { get; set; } = string.Empty;
 

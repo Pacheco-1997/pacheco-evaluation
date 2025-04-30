@@ -27,5 +27,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion<string>()
             .HasMaxLength(20);
 
+        builder.OwnsOne(u => u.Name);
+        builder.OwnsOne(u => u.Address, a =>
+        {
+            a.OwnsOne(ad => ad.Geolocation);
+        });
+
     }
 }

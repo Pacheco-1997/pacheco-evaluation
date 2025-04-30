@@ -28,5 +28,29 @@ public class UserValidator : AbstractValidator<User>
         RuleFor(user => user.Role)
             .NotEqual(UserRole.None)
             .WithMessage("User role cannot be None.");
+
+        RuleFor(u => u.Name.Firstname)
+        .NotEmpty().WithMessage("Firstname must not be empty.");
+
+        RuleFor(u => u.Name.Lastname)
+            .NotEmpty().WithMessage("Lastname must not be empty.");
+
+        RuleFor(u => u.Address.City)
+            .NotEmpty().WithMessage("City must not be empty.");
+
+        RuleFor(u => u.Address.Street)
+            .NotEmpty().WithMessage("Street must not be empty.");
+
+        RuleFor(u => u.Address.Number)
+            .GreaterThan(0).WithMessage("Number must be greater than zero.");
+
+        RuleFor(u => u.Address.Zipcode)
+            .NotEmpty().WithMessage("Zipcode must not be empty.");
+
+        RuleFor(u => u.Address.Geolocation.Lat)
+            .NotEmpty().WithMessage("Latitude must not be empty.");
+
+        RuleFor(u => u.Address.Geolocation.Long)
+            .NotEmpty().WithMessage("Longitude must not be empty.");
     }
 }

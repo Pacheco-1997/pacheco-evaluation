@@ -25,6 +25,14 @@ public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
     {
         RuleFor(user => user.Email).SetValidator(new EmailValidator());
         RuleFor(user => user.Username).NotEmpty().Length(3, 50);
+        RuleFor(user => user.Name.Firstname).NotEmpty().Length(3, 50);
+        RuleFor(user => user.Name.Lastname).NotEmpty().Length(3, 50);
+        RuleFor(user => user.Address.Street).NotEmpty();
+        RuleFor(user => user.Address.Number).NotEmpty();
+        RuleFor(user => user.Address.Zipcode).NotEmpty();
+        RuleFor(user => user.Address.City).NotEmpty();
+        RuleFor(user => user.Address.Geolocation.Lat).NotEmpty();
+        RuleFor(user => user.Address.Geolocation.Long).NotEmpty();
         RuleFor(user => user.Password).SetValidator(new PasswordValidator());
         RuleFor(user => user.Phone).Matches(@"^\+?[1-9]\d{1,14}$");
         RuleFor(user => user.Status).NotEqual(UserStatus.Unknown);

@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.Domain.Value_Objects;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 
@@ -7,6 +8,10 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 /// </summary>
 public class CreateUserRequest
 {
+    public Name Name { get; set; }
+
+    public Address Address { get; set; }
+
     /// <summary>
     /// Gets or sets the username. Must be unique and contain only valid characters.
     /// </summary>

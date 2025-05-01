@@ -31,6 +31,13 @@ public class CreateSaleResult
     /// </summary>
     public DateTime SaleDate { get; set; }
 
+    public decimal TotalAmount { get; set; }
+
+    /// <summary>
+    /// Indicates whether the sale was cancelled
+    /// </summary>
+    public bool Cancelled { get; set; }
+
     /// <summary>
     /// Gets or sets the list of items included in the sale.
     /// </summary>

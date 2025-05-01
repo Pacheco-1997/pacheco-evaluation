@@ -38,4 +38,11 @@ public interface ISaleRepository
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     Task UpdateAsync(Sale sale, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Retrieves all sales.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>All sale entities.</returns>
+    Task<IEnumerable<Sale>> GetAllAsync(CancellationToken cancellationToken);
 }

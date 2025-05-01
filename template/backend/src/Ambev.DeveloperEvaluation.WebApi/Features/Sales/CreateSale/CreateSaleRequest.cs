@@ -11,14 +11,9 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
     public class CreateSaleRequest
     {
         /// <summary>
-        /// The sale number, e.g. invoice or receipt identifier.
-        /// </summary>
-        public string SaleNumber { get; set; } = string.Empty;
-
-        /// <summary>
         /// The date and time when the sale was made.
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime SaleDate { get; set; }
 
         /// <summary>
         /// The unique identifier of the customer making the purchase.
@@ -33,12 +28,10 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
         /// <summary>
         /// The list of items included in this sale.
         /// </summary>
-        public List<SaleItemRequestDto> Items { get; set; } = new List<SaleItemRequestDto>();
+        public List<SaleItemCreateRequestDto> Items { get; set; } = new List<SaleItemCreateRequestDto>();
 
-        /// <summary>
-        /// Indicates whether the sale is already cancelled at creation time.
-        /// </summary>
-        public bool Cancelled { get; set; } = false;
+    
+        
     }
 
  

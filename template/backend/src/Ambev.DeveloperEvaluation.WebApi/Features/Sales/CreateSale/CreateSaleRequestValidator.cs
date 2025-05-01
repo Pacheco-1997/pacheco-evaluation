@@ -13,7 +13,6 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
         /// </summary>
         /// <remarks>
         /// Validation rules include:
-        /// - SaleNumber: Required, maximum length of 50 characters
         /// - Date: Must not be in the future
         /// - CustomerId: Required
         /// - BranchId: Required
@@ -22,11 +21,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
         /// </remarks>
         public CreateSaleRequestValidator()
         {
-            RuleFor(sale => sale.SaleNumber)
-                .NotEmpty().WithMessage("Sale number is required.")
-                .MaximumLength(50).WithMessage("Sale number must not exceed 50 characters.");
-
-            RuleFor(sale => sale.Date)
+            RuleFor(sale => sale.SaleDate)
                 .NotEmpty().WithMessage("Sale date is required.")
                 .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("Sale date cannot be in the future.");
 
@@ -46,7 +41,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
     /// <summary>
     /// Validator for SaleItemRequestDto that defines validation rules for individual sale items.
     /// </summary>
-    public class SaleItemRequestValidator : AbstractValidator<SaleItemRequestDto>
+    public class SaleItemRequestValidator : AbstractValidator<SaleItemCreateRequestDto>
     {
         /// <summary>
         /// Initializes a new instance of the SaleItemRequestValidator with defined validation rules.
@@ -66,13 +61,8 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
             RuleFor(item => item.Quantity)
                 .GreaterThan(0).WithMessage("Quantity must be greater than zero.");
 
-            RuleFor(item => item.UnitPrice)
-                .GreaterThan(0).WithMessage("Unit price must be greater than zero.");
 
-            RuleFor(item => item.Discount)
-                .GreaterThanOrEqualTo(0).WithMessage("Discount cannot be negative.")
-                .LessThanOrEqualTo(item => item.Quantity * item.UnitPrice)
-                .WithMessage("Discount cannot exceed the total price of the item.");
+
         }
     }
 }

@@ -18,19 +18,19 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// <summary>
         /// Data e hora em que a venda foi realizada.
         /// </summary>
-        public DateTime SaleDate { get; private set; }
+        public DateTime SaleDate { get; set; }
 
         /// <summary>
         /// Identidade externa do cliente (clienteId) e desnormalização do nome.
         /// </summary>
         public Guid CustomerId { get; private set; }
-        public string CustomerName { get; private set; } = string.Empty;
+        public string CustomerName { get; set; } 
 
         /// <summary>
         /// Identidade externa da filial (branchId) e desnormalização do nome.
         /// </summary>
         public Guid BranchId { get; private set; }
-        public string BranchName { get; private set; } = string.Empty;
+        public string BranchName { get; set; } 
 
         /// <summary>
         /// Total bruto antes de descontos.
@@ -54,6 +54,10 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// </summary>
         public bool IsCancelled { get; private set; }
 
+        public DateTime CreatedAt { get; private set; }
+
+        public DateTime? UpdatedAt { get; private set; }
+
         public Sale()
         {
             // Para EF Core
@@ -62,17 +66,21 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// <summary>
         /// Cria uma nova venda com itens, aplicando descontos e calculando totais.
         /// </summary>
-        public static Sale Create(Guid customerId, string customerName,
-                                  Guid branchId, string branchName,
+        public static Sale Create(Guid customerId,
+                                  string customerName,
+                                  Guid branchId,
+                                  string branchName,
+                                  DateTime saleDate,
                                   IEnumerable<(Guid productId, string productTitle, decimal unitPrice, int quantity)> products)
         {
             var sale = new Sale
             {
-                SaleDate = DateTime.UtcNow,
                 CustomerId = customerId,
                 CustomerName = customerName,
                 BranchId = branchId,
-                BranchName = branchName
+                BranchName = branchName,
+                SaleDate = saleDate,
+                CreatedAt = DateTime.UtcNow,
             };
 
             foreach (var p in products)
@@ -90,7 +98,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             if (quantity > 20)
                 throw new InvalidOperationException("Cannot sell more than 20 identical items.");
 
-            var item = new SaleItem(productId, productTitle, unitPrice, quantity);
+            var item = new SaleItem(productId, productTitle, unitPrice, quantity, DateTime.UtcNow);
             Items.Add(item);
         }
 

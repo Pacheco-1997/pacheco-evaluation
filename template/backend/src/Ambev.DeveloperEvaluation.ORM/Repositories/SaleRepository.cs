@@ -36,6 +36,13 @@ public class SaleRepository : ISaleRepository
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
+    public async Task<IEnumerable<Sale>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Sales
+                             .Include(s => s.Items)
+                             .ToListAsync(cancellationToken);
+    }
+
     /// <inheritdoc/>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {

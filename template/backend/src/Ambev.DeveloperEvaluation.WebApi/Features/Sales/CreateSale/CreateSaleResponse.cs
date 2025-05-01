@@ -15,14 +15,9 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The sale number
-        /// </summary>
-        public string SaleNumber { get; set; } = string.Empty;
-
-        /// <summary>
         /// The date when the sale was made
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime SaleDate { get; set; }
 
         /// <summary>
         /// The identifier of the customer

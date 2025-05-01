@@ -20,14 +20,18 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public decimal ItemTotalAfterDiscount => TotalItemAmount - Discount;
         public bool IsCancelled { get; private set; }
 
+        public DateTime CreatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; private set; }
+
         protected SaleItem() { }
 
-        public SaleItem(Guid productId, string productTitle, decimal unitPrice, int quantity)
+        public SaleItem(Guid productId, string productTitle, decimal unitPrice, int quantity, DateTime createdAt)
         {
             ProductId = productId;
             ProductTitle = productTitle;
             UnitPrice = unitPrice;
             Quantity = quantity;
+            CreatedAt = createdAt;
             ApplyDiscount();
         }
 

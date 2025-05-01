@@ -4,12 +4,12 @@ using AutoMapper;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 //using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
-//using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetAllSales;
 //using Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 //using Ambev.DeveloperEvaluation.WebApi.Features.Sales.DeleteSale;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 //using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
-//using Ambev.DeveloperEvaluation.Application.Sales.GetAllSales;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
+using Ambev.DeveloperEvaluation.Application.Sales.ListSale;
 //using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 //using Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
 
@@ -34,26 +34,26 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
         /// <summary>
         /// Retrieves all sales
         /// </summary>
-        //[HttpGet]
-        //[ProducesResponseType(typeof(ApiResponseWithData<GetAllSalesResponse>), StatusCodes.Status200OK)]
-        //public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
-        //{
-        //    var request = new GetAllSalesRequest();
-        //    var validator = new GetAllSalesRequestValidator();
-        //    var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        //    if (!validationResult.IsValid)
-        //        return BadRequest(validationResult.Errors);
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponseWithData<GetAllSaleResponse>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        {
+            var request = new GetAllSaleRequest();
+            var validator = new GetAllSaleRequestValidator();
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
 
-        //    var query = _mapper.Map<GetAllSalesQuery>(request);
-        //    var result = await _mediator.Send(query, cancellationToken);
+            var query = _mapper.Map<GetAllSaleQuery>(request);
+            var result = await _mediator.Send(query, cancellationToken);
 
-        //    return Ok(new ApiResponseWithData<GetAllSalesResponse>
-        //    {
-        //        Success = true,
-        //        Message = "Sales retrieved successfully",
-        //        Data = _mapper.Map<GetAllSalesResponse>(result)
-        //    });
-        //}
+            return Ok(new ApiResponseWithData<GetAllSaleResponse>
+            {
+                Success = true,
+                Message = "Sales retrieved successfully",
+                Data = _mapper.Map<GetAllSaleResponse>(result)
+            });
+        }
 
         /// <summary>
         /// Retrieves a sale by ID

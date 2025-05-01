@@ -27,5 +27,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         /// Gets or sets the total value for this item (quantity × unit price).
         /// </summary>
         public decimal TotalAmount => Quantity * UnitPrice;
+        public decimal Discount { get; set; }
+
+        public bool Cancelled { get; set; }
     }
 }

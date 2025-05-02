@@ -1,4 +1,6 @@
-﻿public class GetAllSaleItemResponse
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale
+{
+public class GetAllSaleItemResponse
 {
     public Guid ProductId { get; set; }
     public string ProductTitle { get; set; }
@@ -7,7 +9,8 @@
     public int Quantity { get; set; }
     public decimal Discount { get; set; }
 
-    public decimal ItemTotal => (UnitPrice * Quantity) - Discount;
+    public decimal ItemTotal => UnitPrice * Quantity - Discount;
 
     public bool IsCancelled { get; set; }
+}
 }

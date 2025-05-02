@@ -2,10 +2,11 @@
 using MediatR;
 using System;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale
+{ 
 
 
-    public class GetAllSaleRequest : IRequest<List<GetAllSaleResponse>>
+    public class GetAllSaleRequest : IRequest<List<GetAllSaleResult>>
     {
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
@@ -16,3 +17,4 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
         public bool? IsCancelled { get; set; }
     }
 
+}

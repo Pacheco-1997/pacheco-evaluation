@@ -7,12 +7,12 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches.CreateBranch
     /// <summary>
     /// Profile for mapping between Application and API CreateBranch requests and responses
     /// </summary>
-    public class CreateBranchProfile : Profile
+    public class CreateBranchWebApiProfile : Profile
     {
         /// <summary>
         /// Initializes the mappings for CreateBranch feature
         /// </summary>
-        public CreateBranchProfile()
+        public CreateBranchWebApiProfile()
         {
             // Map API request to application command
             CreateMap<CreateBranchRequest, CreateBranchCommand>();

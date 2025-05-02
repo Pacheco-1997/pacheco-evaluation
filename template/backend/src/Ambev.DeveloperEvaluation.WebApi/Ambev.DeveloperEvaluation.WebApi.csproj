@@ -36,11 +36,6 @@
     <Folder Include="Features\Branches\DeleteBranch\" />
     <Folder Include="Features\Branches\ListBranch\" />
     <Folder Include="Features\Branches\UpdateBranch\" />
-    <Folder Include="Features\Sales\GetSale\" />
-    <Folder Include="Features\Sales\DeleteSale\" />
-    <Folder Include="Features\Sales\UpdateSale\" />
-    <Folder Include="Features\Users\GetUser\" />
-    <Folder Include="Features\Users\DeleteUser\" />
     <Folder Include="Features\Users\ListUser\" />
     <Folder Include="Features\Users\UpdateUser\" />
   </ItemGroup>

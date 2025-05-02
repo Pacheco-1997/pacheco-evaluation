@@ -8,9 +8,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;
     /// Profile for mapping Sale and SaleItem entities
     /// to GetAllSaleResult and GetAllSaleItemResult DTOs.
     /// </summary>
-    public class GetAllSaleProfile : Profile
+    public class GetAllSaleApplicationProfile : Profile
     {
-        public GetAllSaleProfile()
+        public GetAllSaleApplicationProfile()
         {
             // Map Sale → GetAllSaleResult
             CreateMap<Sale, GetAllSaleResult>()
@@ -21,10 +21,13 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;
                 .ForMember(dest => dest.IsCancelled,
                            opt => opt.MapFrom(src => src.IsCancelled))
                 .ForMember(dest => dest.Items,
-                           opt => opt.MapFrom(src => src.Items));
+                           opt => opt.MapFrom(src => src.Items))
+                .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src =>
+                            src.Items != null ? src.Items.Sum(i => i.ItemTotalAfterDiscount) : 0
+                ));
 
-            // Map SaleItem → GetAllSaleItemResult
-            CreateMap<SaleItem, GetAllSaleItemResult>()
+        // Map SaleItem → GetAllSaleItemResult
+        CreateMap<SaleItem, GetAllSaleItemResult>()
                 .ForMember(dest => dest.ProductId,
                            opt => opt.MapFrom(src => src.ProductId))
                 .ForMember(dest => dest.ProductTitle,
@@ -38,8 +41,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;
                 .ForMember(dest => dest.IsCancelled,
                            opt => opt.MapFrom(src => src.IsCancelled));
 
-        //CreateMap<List<GetAllSaleResult>, GetAllSaleResponse>()
-        //    .ForMember(dest => dest.Sales, opt => opt.MapFrom(src => src));
+   
     }
     }
 

@@ -1,6 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.Dtos
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
 {
-    public class SaleItemCreateRequestDto
+    public class CreateSaleItemRequest
     {
         /// <summary>
         /// The unique identifier of the product being sold.

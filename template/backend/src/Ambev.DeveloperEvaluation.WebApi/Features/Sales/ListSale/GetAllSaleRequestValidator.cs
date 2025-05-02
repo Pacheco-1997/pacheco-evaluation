@@ -1,7 +1,8 @@
 ﻿using System;
 using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale
+{ 
 
     /// <summary>
     /// Validator for GetAllSalesRequest, defining rules for filtering parameters.
@@ -46,4 +47,4 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
                 .WithMessage("BranchId must be a valid GUID.");
         }
     }
-
+}

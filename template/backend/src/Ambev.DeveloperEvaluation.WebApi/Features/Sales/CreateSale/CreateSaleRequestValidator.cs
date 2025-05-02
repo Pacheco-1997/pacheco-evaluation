@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Dtos;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
 {
@@ -41,7 +40,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
     /// <summary>
     /// Validator for SaleItemRequestDto that defines validation rules for individual sale items.
     /// </summary>
-    public class SaleItemRequestValidator : AbstractValidator<SaleItemCreateRequestDto>
+    public class SaleItemRequestValidator : AbstractValidator<CreateSaleItemRequest>
     {
         /// <summary>
         /// Initializes a new instance of the SaleItemRequestValidator with defined validation rules.

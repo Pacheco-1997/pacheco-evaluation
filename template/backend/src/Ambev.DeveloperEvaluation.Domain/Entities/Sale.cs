@@ -23,40 +23,40 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// <summary>
         /// Identidade externa do cliente (clienteId) e desnormalização do nome.
         /// </summary>
-        public Guid CustomerId { get; private set; }
+        public Guid CustomerId { get; set; }
         public string CustomerName { get; set; } 
 
         /// <summary>
         /// Identidade externa da filial (branchId) e desnormalização do nome.
         /// </summary>
-        public Guid BranchId { get; private set; }
+        public Guid BranchId { get; set; }
         public string BranchName { get; set; } 
 
         /// <summary>
         /// Total bruto antes de descontos.
         /// </summary>
-        public decimal Subtotal { get; private set; }
+        public decimal Subtotal { get; set; }
 
         /// <summary>
         /// Valor total após aplicação de descontos.
         /// </summary>
-        public decimal Total { get; private set; }
+        public decimal Total { get; set; }
 
         /// <summary>
         /// Itens que compõem a venda.
         /// </summary>
-        public List<SaleItem> Items { get; private set; } = new();
+        public List<SaleItem> Items { get; set; } = new();
 
         IReadOnlyCollection<ISaleItem> ISale.Items => Items.AsReadOnly();
 
         /// <summary>
         /// Indica se a venda foi cancelada.
         /// </summary>
-        public bool IsCancelled { get; private set; }
+        public bool IsCancelled { get; set; }
 
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime? UpdatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public Sale()
         {
@@ -107,6 +107,41 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             Subtotal = Items.Sum(i => i.TotalItemAmount);
             Total = Items.Sum(i => i.ItemTotalAfterDiscount);
         }
+
+        public void Update(
+    Guid customerId,
+    string customerName,
+    Guid branchId,
+    string branchName,
+    DateTime saleDate,
+    bool isCancelled,
+    IEnumerable<(Guid productId, string productTitle, decimal unitPrice, int quantity, bool isCancelled)> products)
+        {
+            CustomerId = customerId;
+            CustomerName = customerName;
+            BranchId = branchId;
+            BranchName = branchName;
+            SaleDate = saleDate;
+            IsCancelled = isCancelled;
+
+            foreach (var p in products)
+            {
+                var existingItem = Items.FirstOrDefault(i => i.ProductId == p.productId);
+                if (existingItem != null)
+                {
+                    existingItem.Update(p.productTitle, p.unitPrice, p.quantity, p.isCancelled);
+                }
+                else
+                {
+                    AddItem(p.productId, p.productTitle, p.unitPrice, p.quantity);
+                }
+            }
+
+            CalculateTotals();
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+
 
         /// <summary>
         /// Cancela a venda inteira.

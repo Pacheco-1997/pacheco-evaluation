@@ -7,12 +7,12 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch
     /// <summary>
     /// Profile for mapping between CreateBranchCommand, Branch entity and CreateBranchResult
     /// </summary>
-    public class CreateBranchProfile : Profile
+    public class CreateBranchApplicationProfile : Profile
     {
         /// <summary>
         /// Initializes the mappings for CreateBranch operation
         /// </summary>
-        public CreateBranchProfile()
+        public CreateBranchApplicationProfile()
         {
             // Map from application command to domain entity
             CreateMap<CreateBranchCommand, Branch>()

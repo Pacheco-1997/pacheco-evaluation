@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Application.Sales.ListSale;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;
-
+namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
+{
     /// <summary>
     /// Handler for processing GetAllSaleQuery requests.
     /// </summary>
@@ -18,28 +18,24 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;
         private readonly ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GetAllSaleHandler"/>.
-        /// </summary>
-        /// <param name="saleRepository">Repository for querying sales.</param>
-        /// <param name="mapper">AutoMapper instance.</param>
         public GetAllSaleHandler(ISaleRepository saleRepository, IMapper mapper)
         {
             _saleRepository = saleRepository;
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Handles the GetAllSaleQuery by retrieving, filtering, and mapping sales.
-        /// </summary>
-        public async Task<List<GetAllSaleResult>> Handle(
-            GetAllSaleQuery request,
-            CancellationToken cancellationToken)
+        public async Task<List<GetAllSaleResult>> Handle(GetAllSaleQuery request, CancellationToken cancellationToken)
         {
-            // 1) load all sales from repository
+            // 1) Validação
+            var validator = new GetAllSaleQueryValidator();
+            var validation = await validator.ValidateAsync(request, cancellationToken);
+            if (!validation.IsValid)
+                throw new ValidationException(validation.Errors);
+
+            // 2) Carrega vendas
             var sales = await _saleRepository.GetAllAsync(cancellationToken);
 
-            // 2) apply filters
+            // 3) Filtros
             if (request.StartDate.HasValue)
                 sales = sales.Where(s => s.SaleDate >= request.StartDate.Value);
 
@@ -57,8 +53,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;
 
             var filtered = sales.ToList();
 
-            // 3) map to result DTOs
+            // 4) Map para DTO
             return _mapper.Map<List<GetAllSaleResult>>(filtered);
         }
     }
-
+}

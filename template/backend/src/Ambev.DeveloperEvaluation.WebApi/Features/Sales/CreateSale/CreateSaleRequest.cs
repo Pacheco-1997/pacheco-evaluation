@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ambev.DeveloperEvaluation.Domain.Enums;
-using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Dtos;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
 {
@@ -28,7 +27,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
         /// <summary>
         /// The list of items included in this sale.
         /// </summary>
-        public List<SaleItemCreateRequestDto> Items { get; set; } = new List<SaleItemCreateRequestDto>();
+        public List<CreateSaleItemRequest> Items { get; set; } = new List<CreateSaleItemRequest>();
 
     
         

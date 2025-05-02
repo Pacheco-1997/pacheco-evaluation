@@ -10,12 +10,12 @@ namespace Ambev.DeveloperEvaluation.Application.Products
     /// <summary>
     /// Profile for mapping between Product entity and Application layer DTOs
     /// </summary>
-    public class CreateProductProfile : Profile
+    public class CreateProductApplicationProfile : Profile
     {
         /// <summary>
         /// Initializes the mappings for Product features
         /// </summary>
-        public CreateProductProfile()
+        public CreateProductApplicationProfile()
         {
             // Command -> Entity
             CreateMap<CreateProductCommand, Product>()

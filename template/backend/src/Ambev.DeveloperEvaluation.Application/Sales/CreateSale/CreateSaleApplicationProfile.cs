@@ -6,9 +6,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 /// <summary>
 /// Profile for mapping between Sale entity and CreateSaleResult
 /// </summary>
-public class CreateSaleProfile : Profile
+public class CreateSaleApplicationProfile : Profile
 {
-    public CreateSaleProfile()
+    public CreateSaleApplicationProfile()
     {
 
         // Mapeia cada item de venda

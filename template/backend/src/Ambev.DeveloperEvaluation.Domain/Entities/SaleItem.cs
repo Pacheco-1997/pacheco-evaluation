@@ -10,20 +10,20 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 {
     public class SaleItem : BaseEntity, ISaleItem
     {
-        public Guid SaleId { get; private set; }
-        public Guid ProductId { get; private set; }
-        public string ProductTitle { get; private set; } = string.Empty;
-        public decimal UnitPrice { get; private set; }
-        public int Quantity { get; private set; }
-        public decimal Discount { get; private set; }
+        public Guid SaleId { get; set; }
+        public Guid ProductId { get; set; }
+        public string ProductTitle { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int Quantity { get; set; }
+        public decimal Discount { get; set; }
         public decimal TotalItemAmount => UnitPrice * Quantity;
         public decimal ItemTotalAfterDiscount => TotalItemAmount - Discount;
-        public bool IsCancelled { get; private set; }
+        public bool IsCancelled { get; set; }
 
-        public DateTime CreatedAt { get; private set; }
-        public DateTime? UpdatedAt { get; private set; }
-
-        protected SaleItem() { }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+            
+        public SaleItem() { }
 
         public SaleItem(Guid productId, string productTitle, decimal unitPrice, int quantity, DateTime createdAt)
         {
@@ -34,6 +34,17 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             CreatedAt = createdAt;
             ApplyDiscount();
         }
+
+        public void Update(string productTitle, decimal unitPrice, int quantity, bool isCancelled)
+        {
+            ProductTitle = productTitle;
+            UnitPrice = unitPrice;
+            Quantity = quantity;
+            IsCancelled = isCancelled;
+            ApplyDiscount();
+            UpdatedAt = DateTime.UtcNow;
+        }
+
 
         private void ApplyDiscount()
         {

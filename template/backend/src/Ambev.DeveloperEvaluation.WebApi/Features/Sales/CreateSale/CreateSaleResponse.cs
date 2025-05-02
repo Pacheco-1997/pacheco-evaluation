@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Dtos;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
@@ -42,7 +41,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
         /// <summary>
         /// The list of items included in this sale
         /// </summary>
-        public List<SaleItemDto> Items { get; set; } = new List<SaleItemDto>();
+        public List<CreateSaleItemResponse> Items { get; set; } = new List<CreateSaleItemResponse>();
     }
 
 

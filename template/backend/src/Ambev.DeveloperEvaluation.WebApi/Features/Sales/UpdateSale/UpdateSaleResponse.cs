@@ -1,63 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;
 
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale
+{
     /// <summary>
-    /// Represents a single sale in the result of a GetAllSalesQuery.
+    /// API response model for UpdateSale operation
     /// </summary>
-    public class GetAllSaleResult
+    public class UpdateSaleResponse
     {
         /// <summary>
-        /// The unique identifier of the sale.
+        /// The unique identifier of the updated sale
         /// </summary>
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The date and time when the sale took place.
+        /// The date and time when the sale was made
         /// </summary>
         public DateTime SaleDate { get; set; }
 
         /// <summary>
-        /// External identifier of the customer.
+        /// External identifier of the customer
         /// </summary>
         public Guid CustomerId { get; set; }
 
         /// <summary>
-        /// Denormalized name of the customer.
+        /// Denormalized customer name
         /// </summary>
         public string CustomerName { get; set; } = string.Empty;
 
         /// <summary>
-        /// External identifier of the branch.
+        /// External identifier of the branch
         /// </summary>
         public Guid BranchId { get; set; }
 
         /// <summary>
-        /// Denormalized name of the branch.
+        /// Denormalized branch name
         /// </summary>
         public string BranchName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gross total before any discounts.
+        /// Gross total before discounts
         /// </summary>
         public decimal Subtotal { get; set; }
 
         /// <summary>
-        /// Net total after all discounts.
+        /// Total after discounts
         /// </summary>
         public decimal Total { get; set; }
 
-        public decimal TotalAmount { get; set; } 
+        /// <summary>
+        /// Sum of item totals including discounts
+        /// </summary>
+        public decimal TotalAmount { get; set; }
 
         /// <summary>
-        /// Indicates whether the sale has been cancelled.
+        /// Indicates whether the sale was cancelled
         /// </summary>
         public bool IsCancelled { get; set; }
 
         /// <summary>
-        /// The collection of items included in this sale.
+        /// The list of items in the sale
         /// </summary>
-        public IEnumerable<GetAllSaleItemResult> Items { get; set; } = new List<GetAllSaleItemResult>();
+        public List<UpdateSaleItemResponse> Items { get; set; } = new();
     }
-
+}

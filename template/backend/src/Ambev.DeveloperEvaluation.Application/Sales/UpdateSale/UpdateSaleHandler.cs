@@ -1,4 +1,7 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Events;
+using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -13,19 +16,26 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
         private readonly IBranchRepository _branchRepository;
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly IEventRepositoryFactory _eventRepositoryFactory;
+        private readonly IEventPublisherFactory _eventPublisherFactory;
 
         public UpdateSaleHandler(
             ISaleRepository saleRepository,
             IUserRepository userRepository,
             IBranchRepository branchRepository,
             IProductRepository productRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IEventRepositoryFactory eventRepositoryFactory,
+            IEventPublisherFactory eventPublisherFactory)
         {
             _saleRepository = saleRepository;
             _userRepository = userRepository;
             _branchRepository = branchRepository;
             _productRepository = productRepository;
             _mapper = mapper;
+            _eventRepositoryFactory = eventRepositoryFactory;
+            _eventPublisherFactory = eventPublisherFactory;
+
         }
 
         public async Task<UpdateSaleResult> Handle(UpdateSaleCommand command, CancellationToken cancellationToken)
@@ -77,9 +87,35 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
             // 6) Persiste
             await _saleRepository.UpdateAsync(existingSale, cancellationToken);
 
-            // 7) Retorna resultado
-            UpdateSaleResult result = _mapper.Map<UpdateSaleResult>(existingSale);
-            return result;
+            var modifiedEvent = new SaleModifiedEvent(existingSale);
+            await PublishAndSave(modifiedEvent);
+
+            // 7.2) Se a venda foi cancelada, dispara SaleCancelledEvent
+            if (command.IsCancelled)
+            {
+                var cancelledSaleEvent = new SaleCancelledEvent(existingSale);
+                await PublishAndSave(cancelledSaleEvent);
+            }
+
+            // 7.3) Para cada item que foi cancelado, dispara ItemCancelledEvent
+            foreach (var cmdItem in command.Items.Where(i => i.IsCancelled))
+            {
+                var domainItem = existingSale.Items.First(i => i.ProductId == cmdItem.ProductId);
+                var itemCancelledEvent = new SaleItemCancelledEvent(domainItem);
+                await PublishAndSave(itemCancelledEvent);
+            }
+
+            // 8) Retorna resultado
+            return _mapper.Map<UpdateSaleResult>(existingSale);
+        }
+
+        private async Task PublishAndSave<TEvent>(TEvent @event) where TEvent : class
+        {
+            var publisher = _eventPublisherFactory.GetPublisher<TEvent>();
+            await publisher.PublishAsync(@event);
+
+            var repository = _eventRepositoryFactory.GetRepository<TEvent>();
+            await repository.SaveAsync(@event);
         }
     }
 }

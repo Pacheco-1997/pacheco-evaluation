@@ -108,14 +108,21 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             Total = Items.Sum(i => i.ItemTotalAfterDiscount);
         }
 
+        public void RecalculateTotals()
+        {
+            Subtotal = Items.Where(i => !i.IsCancelled).Sum(i => i.TotalItemAmount);
+            Total = Items.Where(i => !i.IsCancelled).Sum(i => i.ItemTotalAfterDiscount);
+            UpdatedAt = DateTime.UtcNow;
+        }
+
         public void Update(
-    Guid customerId,
-    string customerName,
-    Guid branchId,
-    string branchName,
-    DateTime saleDate,
-    bool isCancelled,
-    IEnumerable<(Guid productId, string productTitle, decimal unitPrice, int quantity, bool isCancelled)> products)
+            Guid customerId,
+            string customerName,
+            Guid branchId,
+            string branchName,
+            DateTime saleDate,
+            bool isCancelled,
+            IEnumerable<(Guid productId, string productTitle, decimal unitPrice, int quantity, bool isCancelled)> products)
         {
             CustomerId = customerId;
             CustomerName = customerName;
@@ -137,8 +144,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
                 }
             }
 
-            CalculateTotals();
-            UpdatedAt = DateTime.UtcNow;
+            //CalculateTotals();
+            RecalculateTotals();
+            //UpdatedAt = DateTime.UtcNow;
         }
 
 

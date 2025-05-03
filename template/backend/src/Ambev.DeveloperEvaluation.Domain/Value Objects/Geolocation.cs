@@ -10,6 +10,14 @@ namespace Ambev.DeveloperEvaluation.Domain.Value_Objects
     {
        public Geolocation() { }
 
+
+
+       public Geolocation(string lat, string longi)
+       {
+          Lat = lat;
+          Long = longi;
+       }
+
        public string Lat { get; set; }
        public string Long { get; set; }
     }

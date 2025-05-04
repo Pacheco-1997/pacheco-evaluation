@@ -1,3 +1,20 @@
+## Instructions
+
+Para configurar, executar e testar o projeto siga as instruçoes:
+
+- Instale o postgre SQL na versão 16, crie no banco portgres na maquina local o 
+user=database-user
+senha=Pass@word
+
+- No visual studio no gerenciador de pacote nuget, aponte para o projeto Ambev.DeveloperEvaluation.ORM e rode o comando Update-Database para criação do banco e tabelas
+
+- Rode o projeto e uso o endpoint de Create User, Branch e Product para criar os três rescursos, salve as informações retornadas para poder usa-las nos endpoints de CRUD de Sale, todos os endpoints de Sale foram criados e estão disponíveis para uso.
+
+- Para verificar o Logging e persintencia dos eventos no mongoDB intale ele localmente na versão 8.0.9 com a connection LocalMongo com host localhost:27017, sem senha.
+
+- Para rodar os testes Criados pro Crud de Sale, no gerenciador de teste do visual studio rode os testes de 
+Ambev.DeveloperEvaluation.Unit.Application.Sales
+
 # Developer Evaluation Project
 
 `READ CAREFULLY`

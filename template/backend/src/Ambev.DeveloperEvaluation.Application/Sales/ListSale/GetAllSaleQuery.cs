@@ -7,7 +7,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;
 /// <summary>
 /// Query for retrieving a filtered list of sales.
 /// </summary>
-public class GetAllSaleQuery : IRequest<List<GetAllSaleResult>>
+public class GetAllSaleQuery : IRequest<PagedResult<GetAllSaleResult>>
 {
     /// <summary>
     /// Optional start of the date range filter.
@@ -37,4 +37,8 @@ public class GetAllSaleQuery : IRequest<List<GetAllSaleResult>>
     /// If null, both are included.
     /// </summary>
     public bool? IsCancelled { get; set; }
+
+    public int Page { get; set; } = 1;
+    public int Size { get; set; } = 10;
+    public string? Order { get; set; }
 }

@@ -41,7 +41,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
 
         /// <inheritdoc />
-        public Guid Id { get; private set; }
+        public Guid Id { get;  set; }
 
         /// <summary>
         /// Initializes a new instance of the Branch class.

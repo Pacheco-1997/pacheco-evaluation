@@ -24,7 +24,7 @@ namespace Ambev.DeveloperEvaluation.Application.Events
         public async Task PublishAsync(TEvent @event)
         {
             // 1) Persiste no Mongo
-            //await _repo.SaveAsync(@event);
+            await _repo.SaveAsync(@event);
 
             // 2) “Publica” em log
             _logger.LogInformation(

@@ -85,7 +85,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         await eventPublisher.PublishAsync(saleCreatedEvent);
 
         var eventRepository = _eventRepositoryFactory.GetRepository<SaleCreatedEvent>();
-        await eventRepository.SaveAsync(saleCreatedEvent);
+        //await eventRepository.SaveAsync(saleCreatedEvent);
 
 
         return _mapper.Map<CreateSaleResult>(sale);

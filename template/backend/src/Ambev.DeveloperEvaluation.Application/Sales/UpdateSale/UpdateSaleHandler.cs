@@ -59,6 +59,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
 
             // 4) Atualiza itens da venda com produtos do banco
             var products = new List<(Guid productId, string productTitle, decimal unitPrice, int quantity, bool isCancelled)>();
+
+         
+
             foreach (var item in command.Items)
             {
                 var product = await _productRepository.GetByIdAsync(item.ProductId, cancellationToken)
@@ -115,7 +118,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
             await publisher.PublishAsync(@event);
 
             var repository = _eventRepositoryFactory.GetRepository<TEvent>();
-            await repository.SaveAsync(@event);
+            //await repository.SaveAsync(@event);
         }
     }
 }

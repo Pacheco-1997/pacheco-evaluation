@@ -35,23 +35,33 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
         /// Retrieves all sales
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponseWithData<List<GetAllSaleResponse>>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        [ProducesResponseType(typeof(ApiResponseWithData<PagedResult<GetAllSaleResponse>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllSaleRequest request, CancellationToken cancellationToken)
         {
-            var request = new GetAllSaleRequest();
+            // Validação permanece a mesma
             var validator = new GetAllSaleRequestValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
+            // Map para a query, agora inclui Page/Size/Order
             var query = _mapper.Map<GetAllSaleQuery>(request);
-            var result = await _mediator.Send(query, cancellationToken);
+            var pagedResult = await _mediator.Send(query, cancellationToken);
 
-            return Ok(new ApiResponseWithData<List<GetAllSaleResponse>>
+            // Map os itens e inclua metadados
+            var responseItems = _mapper.Map<List<GetAllSaleResponse>>(pagedResult.Items);
+
+            return Ok(new ApiResponseWithData<PagedResult<GetAllSaleResponse>>
             {
                 Success = true,
                 Message = "Sales retrieved successfully",
-                Data = _mapper.Map<List<GetAllSaleResponse>>(result)
+                Data = new PagedResult<GetAllSaleResponse>
+                {
+                    Items = responseItems,
+                    TotalItems = pagedResult.TotalItems,
+                    CurrentPage = pagedResult.CurrentPage,
+                    TotalPages = pagedResult.TotalPages
+                }
             });
         }
 

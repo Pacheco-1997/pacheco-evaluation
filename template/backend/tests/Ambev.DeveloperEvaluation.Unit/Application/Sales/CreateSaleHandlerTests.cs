@@ -47,6 +47,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sales
 
             var config = new MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<SaleItem, CreateSaleItemResult>();
                 cfg.CreateMap<Sale, CreateSaleResult>();
             });
             _mapper = config.CreateMapper();
@@ -77,8 +78,16 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sales
                 .Returns(Task.FromResult(user));
             _branchRepository.GetByIdAsync(command.BranchId, Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(branch));
-            _productRepository.GetByIdAsync(item.ProductId, Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(product));
+            _productRepository
+                   .GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+                   .Returns(callInfo =>
+                   {
+                       var productId = callInfo.Arg<Guid>();
+                       var item = command.Items.FirstOrDefault(x => x.ProductId == productId);
+                       if (item == null) return Task.FromResult<Product>(null);
+
+                       return Task.FromResult(CreateSaleHandlerTestData.ValidProduct(productId, item.UnitPrice));
+                   });
 
             _saleRepository.AddAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
@@ -94,5 +103,39 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sales
             result.Should().NotBeNull();
             result.Id.Should().NotBeEmpty();
         }
+
+        [Fact]
+        public async Task Handle_InvalidQuantity_ShouldThrowValidationException()
+        {
+            // Arrange
+            var command = CreateSaleHandlerTestData.ValidCommand();
+
+            // Força a quantidade inválida
+            command.Items.First().Quantity = 0;
+
+            var user = CreateSaleHandlerTestData.ValidUser(command.CustomerId);
+            var branch = CreateSaleHandlerTestData.ValidBranch(command.BranchId);
+
+            _userRepository.GetByIdAsync(command.CustomerId, Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(user));
+            _branchRepository.GetByIdAsync(command.BranchId, Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(branch));
+
+            _productRepository
+                .GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+                .Returns(callInfo =>
+                {
+                    var productId = callInfo.Arg<Guid>();
+                    var item = command.Items.FirstOrDefault(x => x.ProductId == productId);
+                    if (item == null) return Task.FromResult<Product>(null);
+
+                    return Task.FromResult(CreateSaleHandlerTestData.ValidProduct(productId, item.UnitPrice));
+                });
+
+            // Act & Assert
+            await Assert.ThrowsAsync<FluentValidation.ValidationException>(() => _handler.Handle(command, CancellationToken.None));
+        }
+
+
     }
 }

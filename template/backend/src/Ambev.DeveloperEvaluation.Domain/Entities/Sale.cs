@@ -75,6 +75,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         {
             var sale = new Sale
             {
+                Id = Guid.NewGuid(),
                 CustomerId = customerId,
                 CustomerName = customerName,
                 BranchId = branchId,
